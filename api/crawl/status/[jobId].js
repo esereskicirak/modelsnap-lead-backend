@@ -1,4 +1,12 @@
 export default function handler(req, res) {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+
+  if (req.method === "OPTIONS") {
+    return res.status(200).end();
+  }
+
   const { jobId } = req.query;
 
   global.jobs = global.jobs || {};
@@ -8,7 +16,6 @@ export default function handler(req, res) {
     return res.status(404).json({ error: "Job not found" });
   }
 
-  // progress arttır
   job.progress += 25;
 
   if (job.progress >= 100) {
